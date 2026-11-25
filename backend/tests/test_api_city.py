@@ -65,3 +65,17 @@ def test_get_assets_payload_and_shapes() -> None:
             assert len(asset["connects"]) == 1
 
     assert by_id["ROAD_01"]["connects"] == ["NODE_01", "NODE_02"]
+
+
+def test_cors_allows_loopback_ip_origin() -> None:
+    """GET /api/health with Origin http://127.0.0.1:5173 returns CORS allow header."""
+    response = client.get("/api/health", headers={"Origin": "http://127.0.0.1:5173"})
+    assert response.status_code == 200
+    assert response.headers.get("access-control-allow-origin") == "http://127.0.0.1:5173"
+
+
+def test_cors_rejects_unlisted_origin() -> None:
+    """GET /api/health with an unlisted Origin omits access-control-allow-origin."""
+    response = client.get("/api/health", headers={"Origin": "http://evil.example.com"})
+    assert response.status_code == 200
+    assert "access-control-allow-origin" not in response.headers
