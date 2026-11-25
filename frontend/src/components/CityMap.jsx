@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   buildLabelItems,
@@ -28,6 +28,16 @@ function getStatusColor(status) {
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
+}
+
+function clientToSvgPoint(svg, clientX, clientY) {
+  if (!svg) return { x: clientX, y: clientY };
+  const ctm = svg.getScreenCTM();
+  if (!ctm) return { x: clientX, y: clientY };
+  const pt = svg.createSVGPoint();
+  pt.x = clientX;
+  pt.y = clientY;
+  return pt.matrixTransform(ctm.inverse());
 }
 
 function leaderSegment(x1, y1, r1, x2, y2, r2) {
@@ -66,33 +76,35 @@ export default function CityMap({
   const zoom = transform.scale;
   const nodes = useMemo(() => city?.nodes || [], [city]);
 
-  const toSvgPoint = (clientX, clientY) => {
+  const toSvgPoint = (clientX, clientY) =>
+    clientToSvgPoint(svgRef.current, clientX, clientY);
+
+  useEffect(() => {
     const svg = svgRef.current;
-    if (!svg) return { x: clientX, y: clientY };
-    const ctm = svg.getScreenCTM();
-    if (!ctm) return { x: clientX, y: clientY };
-    const pt = svg.createSVGPoint();
-    pt.x = clientX;
-    pt.y = clientY;
-    return pt.matrixTransform(ctm.inverse());
-  };
+    if (!svg) return undefined;
 
-  const handleWheel = (event) => {
-    event.preventDefault();
-    const cursor = toSvgPoint(event.clientX, event.clientY);
-    const zoomFactor = event.deltaY < 0 ? 1.15 : 1 / 1.15;
+    const handleWheel = (event) => {
+      event.preventDefault();
+      const cursor = clientToSvgPoint(svg, event.clientX, event.clientY);
+      const zoomFactor = event.deltaY < 0 ? 1.15 : 1 / 1.15;
 
-    setTransform((prev) => {
-      const nextScale = clamp(prev.scale * zoomFactor, 0.5, 4);
-      const worldX = (cursor.x - prev.x) / prev.scale;
-      const worldY = (cursor.y - prev.y) / prev.scale;
-      return {
-        scale: nextScale,
-        x: cursor.x - worldX * nextScale,
-        y: cursor.y - worldY * nextScale,
-      };
-    });
-  };
+      setTransform((prev) => {
+        const nextScale = clamp(prev.scale * zoomFactor, 0.5, 4);
+        const worldX = (cursor.x - prev.x) / prev.scale;
+        const worldY = (cursor.y - prev.y) / prev.scale;
+        return {
+          scale: nextScale,
+          x: cursor.x - worldX * nextScale,
+          y: cursor.y - worldY * nextScale,
+        };
+      });
+    };
+
+    svg.addEventListener("wheel", handleWheel, { passive: false });
+    return () => {
+      svg.removeEventListener("wheel", handleWheel);
+    };
+  }, []);
 
   const handlePointerDown = (event) => {
     if (event.button !== 0) return;
@@ -230,7 +242,6 @@ export default function CityMap({
         ref={svgRef}
         viewBox="0 0 1000 700"
         className="h-full w-full cursor-grab active:cursor-grabbing"
-        onWheel={handleWheel}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
