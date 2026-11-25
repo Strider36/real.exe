@@ -557,6 +557,44 @@ export default function CityMap({
             })}
           </g>
         </g>
+
+        {city?.external_reference && (
+          <g className="pointer-events-none" aria-hidden="true">
+            {(() => {
+              const ext = city.external_reference;
+              const arrowTipX = Math.min(985, Number(ext.x) || 985);
+              const arrowY = clamp(Number(ext.y) || 350, 60, 640);
+              const lineStartX = arrowTipX - 48;
+              return (
+                <>
+                  <line
+                    x1={lineStartX}
+                    y1={arrowY}
+                    x2={arrowTipX - 8}
+                    y2={arrowY}
+                    stroke="#64748b"
+                    strokeWidth={2}
+                    strokeDasharray="5 4"
+                  />
+                  <polygon
+                    points={`${arrowTipX},${arrowY} ${arrowTipX - 10},${arrowY - 5} ${arrowTipX - 10},${arrowY + 5}`}
+                    fill="#64748b"
+                  />
+                  <text
+                    x={arrowTipX}
+                    y={arrowY - 12}
+                    textAnchor="end"
+                    fontSize={11}
+                    fontWeight="600"
+                    fill="#475569"
+                  >
+                    {ext.name} (about 35 km ESE, outside network)
+                  </text>
+                </>
+              );
+            })()}
+          </g>
+        )}
       </svg>
 
       <div className="pointer-events-none absolute bottom-3 left-3 rounded-md bg-white/90 px-2.5 py-1 text-[11px] font-mono text-slate-600 shadow-sm border border-slate-200">

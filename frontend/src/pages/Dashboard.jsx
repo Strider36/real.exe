@@ -103,6 +103,9 @@ export default function Dashboard() {
             Reset view
           </button>
         </div>
+        <p className="mx-auto max-w-[1440px] mt-1.5 text-xs text-slate-300">
+          Schematic network on real geography. Place names and positions are approximate. Roads, pipelines, capacities, and demand are SYNTHETIC assumptions.
+        </p>
       </header>
 
       <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 lg:p-6">

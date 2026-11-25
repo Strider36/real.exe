@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from app.core.geo import project
+
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 
 
@@ -17,16 +19,26 @@ def _read_json(filename: str) -> dict[str, Any]:
 
 
 def load_city() -> dict[str, Any]:
-    """Return the combined synthetic city network dataset."""
+    """Return the combined synthetic city network dataset with projected x/y."""
     city_nodes = _read_json("city_nodes.json")
     roads_data = _read_json("roads.json")
     water_data = _read_json("water_network.json")
     facilities_data = _read_json("facilities.json")
 
+    projected_nodes = []
+    for node in city_nodes["nodes"]:
+        x, y = project(node["lat"], node["lon"])
+        projected_nodes.append({**node, "x": x, "y": y})
+
+    raw_ext = city_nodes["external_reference"]
+    ext_x, ext_y = project(raw_ext["lat"], raw_ext["lon"])
+    external_reference = {**raw_ext, "x": ext_x, "y": ext_y}
+
     return {
         "meta": city_nodes["_meta"],
         "layers": city_nodes["layers"],
-        "nodes": city_nodes["nodes"],
+        "external_reference": external_reference,
+        "nodes": projected_nodes,
         "roads": roads_data["roads"],
         "water": {
             "sources": water_data["sources"],
@@ -42,14 +54,14 @@ def _extract_metadata(item: dict[str, Any], excluded_keys: set[str]) -> dict[str
     return {k: v for k, v in item.items() if k not in excluded_keys}
 
 
-def _coords(node_lookup: dict[str, dict[str, Any]], node_id: str) -> dict[str, int | float]:
-    """Resolve {x, y} coordinates for a node id."""
+def _coords(node_lookup: dict[str, dict[str, Any]], node_id: str) -> dict[str, float]:
+    """Resolve projected {x, y} coordinates for a node id."""
     node = node_lookup[node_id]
     return {"x": node["x"], "y": node["y"]}
 
 
 def build_asset_list() -> list[dict[str, Any]]:
-    """Build a unified list of selectable infrastructure assets with endpoints."""
+    """Build a unified list of selectable infrastructure assets with projected endpoints."""
     city = load_city()
     node_lookup = {node["id"]: node for node in city["nodes"]}
     core_excluded = {"id", "name", "status"}
@@ -88,36 +100,44 @@ def build_asset_list() -> list[dict[str, Any]]:
     for source in city["water"]["sources"]:
         node_id = source["node_id"]
         node = node_lookup[node_id]
+        metadata = _extract_metadata(source, core_excluded)
+        metadata.setdefault("place", node.get("place"))
         assets.append(
             {
                 "id": source["id"],
-                "name": source.get("name", node["name"]),
+                "name": source.get("name") or node["name"],
                 "asset_type": "water_source",
                 "layer": "water",
                 "status": source.get("status", "operational"),
                 "connects": [node_id],
                 "endpoints": [_coords(node_lookup, node_id)],
-                "metadata": _extract_metadata(source, core_excluded),
+                "metadata": metadata,
             }
         )
 
     for demand in city["water"]["demand_nodes"]:
         node_id = demand["node_id"]
+        node = node_lookup[node_id]
+        metadata = _extract_metadata(demand, core_excluded)
+        metadata.setdefault("place", node.get("place"))
         assets.append(
             {
                 "id": demand["id"],
-                "name": demand.get("name", f"{demand['zone']} Demand"),
+                "name": node["name"],
                 "asset_type": "demand_node",
                 "layer": "water",
                 "status": demand.get("status", "operational"),
                 "connects": [node_id],
                 "endpoints": [_coords(node_lookup, node_id)],
-                "metadata": _extract_metadata(demand, core_excluded),
+                "metadata": metadata,
             }
         )
 
     for facility in city["facilities"]:
         node_id = facility["node_id"]
+        node = node_lookup[node_id]
+        metadata = _extract_metadata(facility, core_excluded)
+        metadata.setdefault("place", node.get("place"))
         assets.append(
             {
                 "id": facility["id"],
@@ -127,7 +147,7 @@ def build_asset_list() -> list[dict[str, Any]]:
                 "status": facility.get("status", "operational"),
                 "connects": [node_id],
                 "endpoints": [_coords(node_lookup, node_id)],
-                "metadata": _extract_metadata(facility, core_excluded),
+                "metadata": metadata,
             }
         )
 

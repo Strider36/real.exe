@@ -26,9 +26,8 @@ def test_file_parses_and_has_meta(filename: str) -> None:
     """Every data file parses as JSON and declares _meta.data_status."""
     data = load_json(filename)
     assert "_meta" in data and isinstance(data["_meta"], dict)
-    assert data["_meta"].get("data_status") == (
-        "SYNTHETIC MVP ASSUMPTION - not verified municipal data"
-    )
+    data_status = data["_meta"].get("data_status", "")
+    assert data_status.startswith("SYNTHETIC MVP ASSUMPTION")
 
 
 def test_entity_counts() -> None:

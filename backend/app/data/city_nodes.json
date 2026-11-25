@@ -1,7 +1,14 @@
 {
   "_meta": {
-    "data_status": "SYNTHETIC MVP ASSUMPTION - not verified municipal data",
-    "coordinate_system": "1000 x 700 schematic canvas, origin top-left"
+    "data_status": "SYNTHETIC MVP ASSUMPTION - place names and coordinates are approximate and must be verified before public use",
+    "coordinate_source": "Approximate, manually estimated. Verify each node on Google Maps before demo.",
+    "projection": "equirectangular, fitted to network bounding box in backend/app/core/geo.py",
+    "network_bbox": {
+      "lat_min": 21.16,
+      "lat_max": 21.29,
+      "lon_min": 81.33,
+      "lon_max": 81.44
+    }
   },
   "layers": [
     "roads",
@@ -9,126 +16,148 @@
     "sewage",
     "electricity"
   ],
+  "external_reference": {
+    "id": "RAIPUR_REF",
+    "name": "Raipur",
+    "lat": 21.2514,
+    "lon": 81.6296,
+    "note": "Reference only. Not part of the synthetic network."
+  },
   "nodes": [
     {
       "id": "NODE_01",
       "name": "Civic Centre Junction",
+      "place": "Bhilai Civic Centre",
       "zone": "Civic Centre",
       "kind": "intersection",
-      "x": 500,
-      "y": 330
+      "lat": 21.2090,
+      "lon": 81.3800
     },
     {
       "id": "NODE_02",
       "name": "Supela Junction",
+      "place": "Supela, Bhilai",
       "zone": "Supela",
       "kind": "intersection",
-      "x": 300,
-      "y": 250
+      "lat": 21.1870,
+      "lon": 81.3640
     },
     {
       "id": "NODE_03",
       "name": "Nehru Nagar Junction",
+      "place": "Nehru Nagar, Bhilai",
       "zone": "Nehru Nagar",
       "kind": "intersection",
-      "x": 700,
-      "y": 250
+      "lat": 21.2050,
+      "lon": 81.3930
     },
     {
       "id": "NODE_04",
       "name": "Sector 1 Junction",
+      "place": "Bhilai Sector 1",
       "zone": "Bhilai Sector 1",
       "kind": "intersection",
-      "x": 520,
-      "y": 120
+      "lat": 21.2200,
+      "lon": 81.3740
     },
     {
       "id": "NODE_05",
       "name": "Sector 6 Junction",
+      "place": "Bhilai Sector 6",
       "zone": "Bhilai Sector 6",
       "kind": "intersection",
-      "x": 830,
-      "y": 380
+      "lat": 21.2200,
+      "lon": 81.3930
     },
     {
       "id": "NODE_06",
       "name": "Industrial Gate",
+      "place": "Bhilai Industrial Zone",
       "zone": "Industrial Zone",
       "kind": "intersection",
-      "x": 780,
-      "y": 560
+      "lat": 21.2030,
+      "lon": 81.4080
     },
     {
       "id": "NODE_07",
       "name": "Hospital Junction",
+      "place": "Hospital Zone, Bhilai",
       "zone": "Hospital Zone",
       "kind": "intersection",
-      "x": 300,
-      "y": 480
+      "lat": 21.2120,
+      "lon": 81.3960
     },
     {
       "id": "NODE_08",
       "name": "Water Treatment Plant",
+      "place": "Water Treatment Zone (illustrative site)",
       "zone": "Water Treatment Zone",
       "kind": "source",
-      "x": 150,
-      "y": 600
+      "lat": 21.2340,
+      "lon": 81.3560
     },
     {
       "id": "NODE_09",
       "name": "Reservoir",
+      "place": "Reservoir Zone (illustrative site)",
       "zone": "Reservoir Zone",
       "kind": "source",
-      "x": 110,
-      "y": 300
+      "lat": 21.2560,
+      "lon": 81.3480
     },
     {
       "id": "NODE_10",
       "name": "Bridge West",
+      "place": "Civic Centre corridor",
       "zone": "Civic Centre",
       "kind": "intersection",
-      "x": 380,
-      "y": 380
+      "lat": 21.1990,
+      "lon": 81.3760
     },
     {
       "id": "NODE_11",
       "name": "Bridge East",
+      "place": "Civic Centre corridor",
       "zone": "Civic Centre",
       "kind": "intersection",
-      "x": 640,
-      "y": 380
+      "lat": 21.2050,
+      "lon": 81.3850
     },
     {
       "id": "NODE_12",
       "name": "Ring Road South",
+      "place": "Corridor, Bhilai-Durg",
       "zone": "Corridor",
       "kind": "intersection",
-      "x": 520,
-      "y": 600
+      "lat": 21.1800,
+      "lon": 81.3900
     },
     {
       "id": "NODE_13",
       "name": "Substation A",
+      "place": "Civic Centre",
       "zone": "Civic Centre",
       "kind": "substation",
-      "x": 420,
-      "y": 200
+      "lat": 21.2150,
+      "lon": 81.3820
     },
     {
       "id": "NODE_14",
       "name": "Substation B",
+      "place": "Bhilai Industrial Zone",
       "zone": "Industrial Zone",
       "kind": "substation",
-      "x": 650,
-      "y": 470
+      "lat": 21.1980,
+      "lon": 81.4000
     },
     {
       "id": "NODE_15",
       "name": "Drainage Outfall",
+      "place": "Corridor, Bhilai-Durg",
       "zone": "Corridor",
       "kind": "outfall",
-      "x": 520,
-      "y": 690
+      "lat": 21.1750,
+      "lon": 81.3750
     }
   ]
 }

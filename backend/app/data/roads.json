@@ -1,7 +1,8 @@
 {
   "_meta": {
     "data_status": "SYNTHETIC MVP ASSUMPTION - not verified municipal data",
-    "parameter_notes": "free_flow_min = T0 (BPR), capacity_vph = C, base_volume_vph = V (assumed)"
+    "parameter_notes": "free_flow_min = T0 (BPR), capacity_vph = C, base_volume_vph = V (assumed)",
+    "distance_note": "length_km and free_flow_min are schematic and are not measured distances; a later stage will reconcile them."
   },
   "roads": [
     {

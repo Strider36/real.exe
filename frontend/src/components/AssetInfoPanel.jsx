@@ -50,7 +50,9 @@ export default function AssetInfoPanel({ selectedAsset, city }) {
     }
 
     const nodeId = selectedAsset.connects?.[0];
-    const nodeName = nodeMap.get(nodeId)?.name || nodeId;
+    const node = nodeMap.get(nodeId);
+    const nodeName = node?.name || nodeId;
+    const nodePlace = node?.place || selectedAsset.metadata?.place;
 
     if (selectedAsset.asset_type === "demand_node") {
       const feedingPipelines = pipelines.filter((pipe) => pipe.to === nodeId);
@@ -59,6 +61,11 @@ export default function AssetInfoPanel({ selectedAsset, city }) {
           <div>
             <span className="font-medium text-slate-500">Node:</span> {nodeName} ({nodeId})
           </div>
+          {nodePlace && (
+            <div>
+              <span className="font-medium text-slate-500">Place:</span> {nodePlace}
+            </div>
+          )}
           <div className="font-medium text-slate-500">Fed by pipelines:</div>
           {feedingPipelines.length > 0 ? (
             <ul className="list-disc pl-4 space-y-1">
@@ -82,6 +89,11 @@ export default function AssetInfoPanel({ selectedAsset, city }) {
           <div>
             <span className="font-medium text-slate-500">Node:</span> {nodeName} ({nodeId})
           </div>
+          {nodePlace && (
+            <div>
+              <span className="font-medium text-slate-500">Place:</span> {nodePlace}
+            </div>
+          )}
           <div className="font-medium text-slate-500">Outgoing pipelines:</div>
           {outgoingPipelines.length > 0 ? (
             <ul className="list-disc pl-4 space-y-1">
@@ -99,8 +111,15 @@ export default function AssetInfoPanel({ selectedAsset, city }) {
     }
 
     return (
-      <div className="text-xs text-slate-700">
-        <span className="font-medium text-slate-500">Located at:</span> {nodeName} ({nodeId})
+      <div className="space-y-1 text-xs text-slate-700">
+        <div>
+          <span className="font-medium text-slate-500">Located at:</span> {nodeName} ({nodeId})
+        </div>
+        {nodePlace && (
+          <div>
+            <span className="font-medium text-slate-500">Place:</span> {nodePlace}
+          </div>
+        )}
       </div>
     );
   };
