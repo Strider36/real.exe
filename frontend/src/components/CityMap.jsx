@@ -157,10 +157,19 @@ export default function CityMap({
 
   const selectedId = selectedAsset?.id || null;
 
+  const visibleAssets = useMemo(
+    () =>
+      (assets || []).filter(
+        (asset) =>
+          asset.asset_type === "facility" || Boolean(activeLayers[asset.layer])
+      ),
+    [assets, activeLayers]
+  );
+
   const placedLabels = useMemo(() => {
-    const items = buildLabelItems(assets, nodes);
+    const items = buildLabelItems(visibleAssets, nodes);
     return placeLabels(items, zoom, selectedId);
-  }, [assets, nodes, zoom, selectedId]);
+  }, [visibleAssets, nodes, zoom, selectedId]);
 
   const visibleLabels = useMemo(() => {
     const isSelectedLabel = (label) =>
