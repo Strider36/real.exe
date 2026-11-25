@@ -1,6 +1,7 @@
 """Tests for geographic projection and Bhilai-Durg node coordinates."""
 
 import json
+import math
 from pathlib import Path
 
 from app.core.city_loader import build_asset_list, load_city
@@ -44,12 +45,22 @@ def test_raw_city_nodes_have_lat_lon_and_no_xy() -> None:
 
 
 def test_external_reference_raipur_projects_east_of_canvas() -> None:
-    """Raipur external reference projects beyond the right margin and within vertical bounds."""
+    """Raipur external reference projects beyond the right margin and lies in the NE quadrant."""
     city = load_city()
     ext = city["external_reference"]
     assert ext["id"] == "RAIPUR_REF"
     assert ext["x"] > 960.0
     assert 40.0 <= ext["y"] <= 660.0
+
+    center_lat = (LAT_MIN + LAT_MAX) / 2.0
+    center_lon = (LON_MIN + LON_MAX) / 2.0
+    dlon = math.radians(ext["lon"] - center_lon)
+    lat1 = math.radians(center_lat)
+    lat2 = math.radians(ext["lat"])
+    y = math.sin(dlon) * math.cos(lat2)
+    x = math.cos(lat1) * math.sin(lat2) - math.sin(lat1) * math.cos(lat2) * math.cos(dlon)
+    bearing_deg = (math.degrees(math.atan2(y, x)) + 360.0) % 360.0
+    assert 0.0 < bearing_deg < 90.0
 
 
 def test_loader_and_assets_use_projected_coordinates() -> None:

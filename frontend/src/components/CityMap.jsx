@@ -562,8 +562,8 @@ export default function CityMap({
           <g className="pointer-events-none" aria-hidden="true">
             {(() => {
               const ext = city.external_reference;
-              const arrowTipX = Math.min(985, Number(ext.x) || 985);
-              const arrowY = clamp(Number(ext.y) || 350, 60, 640);
+              const arrowTipX = Math.min(ext.x ?? 985, 985);
+              const arrowY = clamp(ext.y ?? 350, 60, 640);
               const lineStartX = arrowTipX - 48;
               return (
                 <>
@@ -588,7 +588,7 @@ export default function CityMap({
                     fontWeight="600"
                     fill="#475569"
                   >
-                    {ext.name} (about 35 km ESE, outside network)
+                    Raipur (about 27 km ENE, straight line, outside network)
                   </text>
                 </>
               );
