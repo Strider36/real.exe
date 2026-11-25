@@ -4,6 +4,7 @@ import AssetInfoPanel from "../components/AssetInfoPanel";
 import CityMap from "../components/CityMap";
 import InfrastructureLayer from "../components/InfrastructureLayer";
 import Legend from "../components/Legend";
+import MapToolbar from "../components/MapToolbar";
 import { fetchAssets, fetchCity, fetchHealth } from "../services/api";
 
 export default function Dashboard() {
@@ -14,6 +15,7 @@ export default function Dashboard() {
   const [healthOk, setHealthOk] = useState(null);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [resetSignal, setResetSignal] = useState(0);
+  const [labelMode, setLabelMode] = useState("key");
   const [activeLayers, setActiveLayers] = useState({
     roads: true,
     water: true,
@@ -124,15 +126,22 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-4 items-start">
-            <div className="w-full lg:w-[70%] h-[75vh]">
-              <CityMap
-                key={resetSignal}
-                city={city}
-                assets={assets}
-                activeLayers={activeLayers}
-                selectedAsset={selectedAsset}
-                onSelectAsset={setSelectedAsset}
+            <div className="w-full lg:w-[70%] flex flex-col">
+              <MapToolbar
+                labelMode={labelMode}
+                onChangeLabelMode={setLabelMode}
               />
+              <div className="h-[75vh] w-full">
+                <CityMap
+                  key={resetSignal}
+                  city={city}
+                  assets={assets}
+                  activeLayers={activeLayers}
+                  selectedAsset={selectedAsset}
+                  onSelectAsset={setSelectedAsset}
+                  labelMode={labelMode}
+                />
+              </div>
             </div>
 
             <aside className="w-full lg:w-[30%] space-y-4">
