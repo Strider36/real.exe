@@ -18,6 +18,12 @@ const STATUS_COLOR = {
   disrupted: "#dc2626",
 };
 
+const BASE_FONT_SIZE = {
+  water_source: 13,
+  facility: 13,
+  demand_node: 10,
+};
+
 const JUNCTION_RADIUS = 4.5;
 const FACILITY_RADIUS = 9;
 const DEMAND_RADIUS = 7;
@@ -173,12 +179,7 @@ export default function CityMap({
 
   const visibleLabels = useMemo(() => {
     const isSelectedLabel = (label) =>
-      Boolean(
-        selectedId &&
-          (label.id === selectedId ||
-            label.nodeId === selectedId ||
-            label.assetIds?.includes(selectedId))
-      );
+      Boolean(selectedId && label.id === selectedId);
 
     let filtered;
     if (labelMode === "off") {
@@ -190,22 +191,53 @@ export default function CityMap({
           (label.visible && KEY_SITE_KINDS.has(label.kind))
       );
     } else {
-      filtered = placedLabels.filter((label) => label.visible || isSelectedLabel(label));
+      filtered = placedLabels.filter(
+        (label) => label.visible || isSelectedLabel(label)
+      );
     }
 
-    return [...filtered].sort((a, b) => (a.isSelected ? 1 : 0) - (b.isSelected ? 1 : 0));
+    return filtered
+      .map((label) => ({
+        ...label,
+        isSelected: isSelectedLabel(label),
+      }))
+      .sort((a, b) => (a.isSelected ? 1 : 0) - (b.isSelected ? 1 : 0));
   }, [placedLabels, labelMode, selectedId]);
 
   const extraSelectedLabel = useMemo(() => {
     if (!selectedAsset) return null;
     const alreadyCovered = visibleLabels.some(
-      (label) =>
-        label.id === selectedAsset.id ||
-        label.assetIds?.includes(selectedAsset.id)
+      (label) => label.id === selectedAsset.id
     );
     if (alreadyCovered) return null;
 
     const endpoints = selectedAsset.endpoints || [];
+    const safeZoom = Math.max(0.5, Number(zoom) || 1);
+
+    if (endpoints.length === 1) {
+      const ep = endpoints[0];
+      const fontSize = (BASE_FONT_SIZE[selectedAsset.asset_type] ?? 10) / safeZoom;
+      let x = ep.x;
+      let y = ep.y - 14 - fontSize * 0.15;
+
+      if (selectedAsset.asset_type === "demand_node") {
+        x = ep.x + 14;
+        y = ep.y + 14 + DEMAND_RADIUS + 4 + fontSize * 0.85;
+      } else if (selectedAsset.asset_type === "facility") {
+        x = ep.x + 14;
+        y = ep.y - 14 - FACILITY_RADIUS - 4 - fontSize * 0.15;
+      }
+
+      return {
+        id: `${selectedAsset.id}-selected-label`,
+        text: selectedAsset.name,
+        x,
+        y,
+        anchor: "middle",
+        fontSize,
+      };
+    }
+
     if (endpoints.length === 2) {
       const mx = (endpoints[0].x + endpoints[1].x) / 2;
       const my = (endpoints[0].y + endpoints[1].y) / 2;
@@ -213,9 +245,9 @@ export default function CityMap({
         id: `${selectedAsset.id}-selected-label`,
         text: selectedAsset.name,
         x: mx,
-        y: my - 10 / zoom,
+        y: my - 10 / safeZoom,
         anchor: "middle",
-        fontSize: 11 / zoom,
+        fontSize: 11 / safeZoom,
       };
     }
     return null;
