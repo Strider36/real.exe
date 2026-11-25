@@ -1,7 +1,9 @@
-"""FastAPI application entrypoint for REALITY.EXE Stage 0."""
+"""FastAPI application entrypoint for REALITY.EXE."""
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from app.api.city import router as city_router
 
 app = FastAPI(title="REALITY.EXE API", version="0.0.1")
 
@@ -13,8 +15,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(city_router)
+
 
 @app.get("/api/health")
-def health_check() -> dict[str, str]:
+def health_check() -> dict[str, object]:
     """Return service health status."""
-    return {"status": "ok", "project": "REALITY.EXE"}
+    return {
+        "status": "ok",
+        "project": "REALITY.EXE",
+        "is_synthetic": True,
+    }
