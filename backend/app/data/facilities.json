@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "data_status": "SYNTHETIC MVP ASSUMPTION - not verified municipal data",
+    "notes": "Facility names are illustrative labels, not real institutions."
+  },
+  "facilities": [
+    {
+      "id": "FAC_01",
+      "name": "District Hospital",
+      "facility_type": "hospital",
+      "node_id": "NODE_07",
+      "priority": 1
+    },
+    {
+      "id": "FAC_02",
+      "name": "Fire Station Sector 1",
+      "facility_type": "fire_station",
+      "node_id": "NODE_04",
+      "priority": 1
+    },
+    {
+      "id": "FAC_03",
+      "name": "Civic Centre Administration",
+      "facility_type": "administration",
+      "node_id": "NODE_01",
+      "priority": 2
+    },
+    {
+      "id": "FAC_04",
+      "name": "Industrial Pump Station",
+      "facility_type": "pump_station",
+      "node_id": "NODE_06",
+      "priority": 2
+    },
+    {
+      "id": "FAC_05",
+      "name": "Water Treatment Plant",
+      "facility_type": "water_facility",
+      "node_id": "NODE_08",
+      "priority": 1
+    }
+  ]
+}

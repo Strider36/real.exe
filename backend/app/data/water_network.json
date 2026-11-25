@@ -1,0 +1,141 @@
+{
+  "_meta": {
+    "data_status": "SYNTHETIC MVP ASSUMPTION - not verified municipal data",
+    "units": "ML/day, assumed",
+    "model": "simplified flow-allocation model, not a hydraulic pressure simulation",
+    "allocation_rule": "Allocate by priority (1 = highest), then proportionally within the same priority level"
+  },
+  "sources": [
+    {
+      "id": "SOURCE_WTP",
+      "node_id": "NODE_08",
+      "kind": "treatment_plant",
+      "capacity_ml_day": 7.5,
+      "status": "operational"
+    },
+    {
+      "id": "SOURCE_RES",
+      "node_id": "NODE_09",
+      "kind": "reservoir",
+      "capacity_ml_day": 4.5,
+      "status": "operational"
+    }
+  ],
+  "demand_nodes": [
+    {
+      "id": "DEMAND_CIVIC",
+      "node_id": "NODE_01",
+      "zone": "Civic Centre",
+      "demand_ml_day": 2.5,
+      "priority": 2
+    },
+    {
+      "id": "DEMAND_SUPELA",
+      "node_id": "NODE_02",
+      "zone": "Supela",
+      "demand_ml_day": 1.8,
+      "priority": 3
+    },
+    {
+      "id": "DEMAND_NEHRU",
+      "node_id": "NODE_03",
+      "zone": "Nehru Nagar",
+      "demand_ml_day": 1.6,
+      "priority": 3
+    },
+    {
+      "id": "DEMAND_SEC1",
+      "node_id": "NODE_04",
+      "zone": "Bhilai Sector 1",
+      "demand_ml_day": 1.4,
+      "priority": 3
+    },
+    {
+      "id": "DEMAND_SEC6",
+      "node_id": "NODE_05",
+      "zone": "Bhilai Sector 6",
+      "demand_ml_day": 1.7,
+      "priority": 3
+    },
+    {
+      "id": "DEMAND_IND",
+      "node_id": "NODE_06",
+      "zone": "Industrial Zone",
+      "demand_ml_day": 2.2,
+      "priority": 2
+    },
+    {
+      "id": "DEMAND_HOSP",
+      "node_id": "NODE_07",
+      "zone": "Hospital Zone",
+      "demand_ml_day": 0.9,
+      "priority": 1
+    }
+  ],
+  "pipelines": [
+    {
+      "id": "WATER_01",
+      "from": "NODE_08",
+      "to": "NODE_01",
+      "name": "WTP to Civic Centre main",
+      "capacity_ml_day": 4.0,
+      "status": "operational"
+    },
+    {
+      "id": "WATER_02",
+      "from": "NODE_08",
+      "to": "NODE_07",
+      "name": "WTP to Hospital main",
+      "capacity_ml_day": 2.0,
+      "status": "operational"
+    },
+    {
+      "id": "WATER_03",
+      "from": "NODE_08",
+      "to": "NODE_06",
+      "name": "WTP to Industrial main",
+      "capacity_ml_day": 3.0,
+      "status": "operational"
+    },
+    {
+      "id": "WATER_04",
+      "from": "NODE_09",
+      "to": "NODE_02",
+      "name": "Reservoir to Supela main",
+      "capacity_ml_day": 2.0,
+      "status": "operational"
+    },
+    {
+      "id": "WATER_05",
+      "from": "NODE_01",
+      "to": "NODE_03",
+      "name": "Civic Centre to Nehru Nagar main",
+      "capacity_ml_day": 1.5,
+      "status": "operational"
+    },
+    {
+      "id": "WATER_06",
+      "from": "NODE_01",
+      "to": "NODE_04",
+      "name": "Civic Centre to Sector 1 main",
+      "capacity_ml_day": 1.2,
+      "status": "operational"
+    },
+    {
+      "id": "WATER_07",
+      "from": "NODE_03",
+      "to": "NODE_05",
+      "name": "Nehru Nagar to Sector 6 main",
+      "capacity_ml_day": 1.2,
+      "status": "operational"
+    },
+    {
+      "id": "WATER_08",
+      "from": "NODE_09",
+      "to": "NODE_01",
+      "name": "Reservoir backup link to Civic Centre",
+      "capacity_ml_day": 1.5,
+      "status": "operational"
+    }
+  ]
+}

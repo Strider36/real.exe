@@ -1,0 +1,134 @@
+{
+  "_meta": {
+    "data_status": "SYNTHETIC MVP ASSUMPTION - not verified municipal data",
+    "coordinate_system": "1000 x 700 schematic canvas, origin top-left"
+  },
+  "layers": [
+    "roads",
+    "water",
+    "sewage",
+    "electricity"
+  ],
+  "nodes": [
+    {
+      "id": "NODE_01",
+      "name": "Civic Centre Junction",
+      "zone": "Civic Centre",
+      "kind": "intersection",
+      "x": 500,
+      "y": 330
+    },
+    {
+      "id": "NODE_02",
+      "name": "Supela Junction",
+      "zone": "Supela",
+      "kind": "intersection",
+      "x": 300,
+      "y": 250
+    },
+    {
+      "id": "NODE_03",
+      "name": "Nehru Nagar Junction",
+      "zone": "Nehru Nagar",
+      "kind": "intersection",
+      "x": 700,
+      "y": 250
+    },
+    {
+      "id": "NODE_04",
+      "name": "Sector 1 Junction",
+      "zone": "Bhilai Sector 1",
+      "kind": "intersection",
+      "x": 520,
+      "y": 120
+    },
+    {
+      "id": "NODE_05",
+      "name": "Sector 6 Junction",
+      "zone": "Bhilai Sector 6",
+      "kind": "intersection",
+      "x": 830,
+      "y": 380
+    },
+    {
+      "id": "NODE_06",
+      "name": "Industrial Gate",
+      "zone": "Industrial Zone",
+      "kind": "intersection",
+      "x": 780,
+      "y": 560
+    },
+    {
+      "id": "NODE_07",
+      "name": "Hospital Junction",
+      "zone": "Hospital Zone",
+      "kind": "intersection",
+      "x": 300,
+      "y": 480
+    },
+    {
+      "id": "NODE_08",
+      "name": "Water Treatment Plant",
+      "zone": "Water Treatment Zone",
+      "kind": "source",
+      "x": 150,
+      "y": 600
+    },
+    {
+      "id": "NODE_09",
+      "name": "Reservoir",
+      "zone": "Reservoir Zone",
+      "kind": "source",
+      "x": 110,
+      "y": 300
+    },
+    {
+      "id": "NODE_10",
+      "name": "Bridge West",
+      "zone": "Civic Centre",
+      "kind": "intersection",
+      "x": 380,
+      "y": 380
+    },
+    {
+      "id": "NODE_11",
+      "name": "Bridge East",
+      "zone": "Civic Centre",
+      "kind": "intersection",
+      "x": 640,
+      "y": 380
+    },
+    {
+      "id": "NODE_12",
+      "name": "Ring Road South",
+      "zone": "Corridor",
+      "kind": "intersection",
+      "x": 520,
+      "y": 600
+    },
+    {
+      "id": "NODE_13",
+      "name": "Substation A",
+      "zone": "Civic Centre",
+      "kind": "substation",
+      "x": 420,
+      "y": 200
+    },
+    {
+      "id": "NODE_14",
+      "name": "Substation B",
+      "zone": "Industrial Zone",
+      "kind": "substation",
+      "x": 650,
+      "y": 470
+    },
+    {
+      "id": "NODE_15",
+      "name": "Drainage Outfall",
+      "zone": "Corridor",
+      "kind": "outfall",
+      "x": 520,
+      "y": 690
+    }
+  ]
+}
